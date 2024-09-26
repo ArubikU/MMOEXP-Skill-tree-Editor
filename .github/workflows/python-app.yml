@@ -28,7 +28,7 @@ jobs:
       - name: Upload Windows build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Windows_skilltree-editor
+          name: Skilltree-editor-Windows
           path: dist/skilltree-editor.exe
 #
 #  build-macos:
@@ -102,7 +102,7 @@ jobs:
       - name: Upload Linux build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Linux_skilltree-editor
+          name: Skilltree-editor-Linux
           path: dist/skilltree-editor.bin
 
   create-release:
@@ -133,7 +133,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: dist/skilltree-editor.exe
-          asset_name: Skilltree-editor-Windows.exe
+          asset_name: Skilltree-editor-Windows
           asset_content_type: application/octet-stream
 
       #- name: Upload macOS Release Asset
