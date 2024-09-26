@@ -1,2 +1,2 @@
 tk
-PIL
+pillow
