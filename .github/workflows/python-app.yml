@@ -30,50 +30,50 @@ jobs:
         with:
           name: Windows_skilltree-editor
           path: dist/skilltree-editor.exe
-
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-
-      - name: Install Homebrew
-        run: |
-          if ! command -v brew &> /dev/null; then
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          fi
-
-      - name: Install Gettext
-        run: |
-          brew install gettext
-          brew link --force gettext  # Ensure gettext is linked correctly
-
-      - name: Set environment variable for gettext
-        run: echo "DYLD_LIBRARY_PATH=$(brew --prefix gettext)/lib" >> $GITHUB_ENV
-
-      - name: Install Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-          architecture: 'x64'
-
-      - name: Install requirements
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run PyInstaller (macOS)
-        run: |
-          python -m PyInstaller skilltree-editor.spec
-
-      - name: Upload macOS build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: MacOS_skilltree-editor
-          path: dist/skilltree-editor
-
-
+#
+#  build-macos:
+#    runs-on: macos-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#
+#      - name: Install Homebrew
+#        run: |
+#          if ! command -v brew &> /dev/null; then
+#            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#          fi
+#
+#      - name: Install Gettext
+#        run: |
+#          brew install gettext
+#          brew link --force gettext  # Ensure gettext is linked correctly
+#
+#      - name: Set environment variable for gettext
+#        run: echo "DYLD_LIBRARY_PATH=$(brew --prefix gettext)/lib" >> $GITHUB_ENV
+#
+#      - name: Install Python 3.8
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: '3.8'
+#          architecture: 'x64'
+#
+#      - name: Install requirements
+#        run: |
+#          pip install --upgrade pip
+#          pip install -r requirements.txt
+#
+#      - name: Run PyInstaller (macOS)
+#        run: |
+#          python -m PyInstaller skilltree-editor.spec
+#
+#      - name: Upload macOS build artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: MacOS_skilltree-editor
+#          path: dist/skilltree-editor
+#
+#
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -106,7 +106,8 @@ jobs:
           path: dist/skilltree-editor
 
   create-release:
-    needs: [build-windows, build-macos, build-linux]
+    #needs: [build-windows, build-macos, build-linux]
+    needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
