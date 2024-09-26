@@ -23,7 +23,7 @@ jobs:
           python -m PyInstaller skilltree-editor.spec
       - uses: actions/upload-artifact@v4
         with:
-          name: Windows_qwiklabs
+          name: Windows_skilltree-editor
           path: dist/skilltree-editor.exe
 
       - name: create release
