@@ -103,7 +103,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Linux_skilltree-editor
-          path: dist/skilltree-editor
+          path: dist/skilltree-editor.bin
 
   create-release:
     #needs: [build-windows, build-macos, build-linux]
@@ -136,15 +136,15 @@ jobs:
           asset_name: Skilltree-editor-Windows.exe
           asset_content_type: application/octet-stream
 
-      - name: Upload macOS Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/skilltree-editor
-          asset_name: Skilltree-editor-MacOS
-          asset_content_type: application/octet-stream
+      #- name: Upload macOS Release Asset
+      #  uses: actions/upload-release-asset@v1
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #    asset_path: dist/skilltree-editor
+      #    asset_name: Skilltree-editor-MacOS
+      #    asset_content_type: application/octet-stream
 
       - name: Upload Linux Release Asset
         uses: actions/upload-release-asset@v1
@@ -152,6 +152,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/skilltree-editor
+          asset_path: dist/skilltree-editor.bin
           asset_name: Skilltree-editor-Linux
           asset_content_type: application/octet-stream

@@ -31,3 +31,9 @@ exe = EXE(pyz,
           upx_exclude=[],
           runtime_tmpdir=None,
           console=True , icon='editor.ico')
+
+bin = BUNDLE(exe,
+                name='skilltree-editor.exe',
+                icon='editor.ico',
+                bundle_identifier=None)
+    
