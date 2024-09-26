@@ -1,3 +1,4 @@
 tk
 pillow
 PyInstaller
+yaml

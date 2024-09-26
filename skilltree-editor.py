@@ -1,8 +1,10 @@
 import copy
+import datetime
 import json
 import math
 import os
 import re
+import sys
 import tkinter as tk
 from collections import deque
 from functools import lru_cache
@@ -12,20 +14,79 @@ import PIL.Image
 import PIL.ImageTk
 import yaml
 
-folder = os.path.dirname(os.path.abspath(__file__))
+continueProgram = True
 
+folder = os.path.dirname(os.path.abspath(__file__))
+log = f"{folder}\\logs\\latest-log.txt"
+logdata = []
+logdata.append(f"----------------------------------------")
+logdata.append(f"Folder: {folder}")
+logdata.append(f"Python Version: {sys.version}")
+logdata.append(f"Tkinter Version: {tk.TkVersion}")
+logdata.append(f"YAML Version: {yaml.__version__}")
+logdata.append(f"----------------------------------------")
+logdata.append(f"")
+
+#create logs folder if not exist
+if not os.path.exists(f"{folder}\\logs"):
+    os.mkdir(f"{folder}\\logs")
+
+#verify if exist a log so rename it to the current date
+if os.path.exists(log):
+    time = datetime.datetime.now()
+    formatedTime = time.strftime("%Y-%m-%d-%H-%M-%S")
+    os.rename(log, f"{folder}\\logs\\log-{formatedTime}.txt")
+
+def writeLog():
+    with open(log, 'w+') as file:
+        for line in logdata:
+            file.write(f"{line}\n")
+            
+def addLineLog(line):
+    with open(log, 'a') as file:
+        time = datetime.datetime.now()
+        formatedTime = time.strftime("%Y-%m-%d %H:%M")
+        file.write(f"{line} [{formatedTime}]\n")
+        
+def validate(path, extra = "", filetype = "File"):
+    if not os.path.exists(path):
+        addLineLog(f"[!] {filetype} not found: {path} {extra}")
+        return False
+    else:
+        addLineLog(f"[+] Loaded {filetype}: {path} {extra}")
+        return True
 texturePath = f"{folder}\\textures.json"
+configPath = f"{folder}\\conf.json"
+
+#show a warning if the textures.json file is not found, uses system message box
+
+for path in [texturePath,configPath]:
+    if not os.path.exists(path):
+        logdata.append(f"[!] File not found: {path}")
+        continueProgram = False
+        break
+    else:
+        logdata.append(f"[+] Loaded file: {path}")
+
 
 with open(texturePath, 'r',encoding="utf-8") as file:
     json_data = json.load(file)
     
-configPath = f"{folder}\\conf.json"
 with open(configPath, 'r',encoding="utf-8") as file:
     config_data = json.load(file)
     
+    
+writeLog()
+    
 textures = {}
-material = config_data["material"]
-version = config_data["version"]
+try:
+    material = config_data["material"]
+    version = config_data["version"]
+except Exception as e:
+    logdata.append(f"[!] Error loading config file: {e}")
+    continueProgram = False
+    
+writeLog()
 
 class AutoSuggestCombobox(ttk.Combobox):
     def __init__(self, master=None, **kwargs):
@@ -241,22 +302,33 @@ class SkillTreeEditor:
             json_data = json.load(file)
             for key, value in json_data['nodes'].items():
                 #generate a PIL image from the path of the image and the uvs
-                tempImage = PIL.Image.open(value['path'].replace("{{folder}}",folder))
-                uvs = value['uvs']
-                #format (x,y,width,height)
-                tempTwo = tempImage.crop((uvs[0], uvs[1], uvs[0]+uvs[2], uvs[1]+uvs[3]))
-                face = round(18*2)
-                tempTwo = tempTwo.resize((face,face), resample=PIL.Image.NEAREST)
-                textures[key] = PIL.ImageTk.PhotoImage(tempTwo)
+                if validate(value['path'].replace("{{folder}}",folder), value['uvs'], "Image"):
+                    tempImage = PIL.Image.open(value['path'].replace("{{folder}}",folder))
+                    uvs = value['uvs']
+                    #format (x,y,width,height)
+                    tempTwo = tempImage.crop((uvs[0], uvs[1], uvs[0]+uvs[2], uvs[1]+uvs[3]))
+                    face = round(18*2)
+                    tempTwo = tempTwo.resize((face,face), resample=PIL.Image.NEAREST)
+                    textures[key] = PIL.ImageTk.PhotoImage(tempTwo)
+                else:
+                    #close the program if the image is not found
+                    messagebox.showwarning("Error", f"Image not found: {value['path']}")
+                    sys.exit()
+                    
             for key, value in json_data['signs'].items():
                 #generate a PIL image from the path of the image and the uvs
-                tempImage = PIL.Image.open(value['path'].replace("{{folder}}",folder))
-                uvs = value['uvs']
-                #format (x,y,width,height)
-                tempTwo = tempImage.crop((uvs[0], uvs[1], uvs[0]+uvs[2], uvs[1]+uvs[3]))
-                face = round(18*2)
-                tempTwo = tempTwo.resize((face,face), resample=PIL.Image.NEAREST)
-                textures[key] = PIL.ImageTk.PhotoImage(tempTwo)
+                if validate(value['path'].replace("{{folder}}",folder), value['uvs'], "Image"):
+                    tempImage = PIL.Image.open(value['path'].replace("{{folder}}",folder))
+                    uvs = value['uvs']
+                    #format (x,y,width,height)
+                    tempTwo = tempImage.crop((uvs[0], uvs[1], uvs[0]+uvs[2], uvs[1]+uvs[3]))
+                    face = round(18*2)
+                    tempTwo = tempTwo.resize((face,face), resample=PIL.Image.NEAREST)
+                    textures[key] = PIL.ImageTk.PhotoImage(tempTwo)
+                else:
+                    #close the program if the image is not found
+                    messagebox.showwarning("Error", f"Image not found: {value['path']}")
+                    sys.exit()
                 
                 
         self.list_colors: list = []
@@ -457,8 +529,10 @@ class SkillTreeEditor:
                     self.node_matrix[(new_x, new_y)] = new_key
                     self.save_state()
                     self.draw_nodes()
+                    addLineLog(f"[+] Added node: {new_key}")
                     window.destroy()
                     return
+            addLineLog(f"[!] No space to add node")
             messagebox.showwarning("Advertencia", "No hay espacio libre alrededor del nodo seleccionado.")
         else:
             messagebox.showwarning("Advertencia", "Selecciona un nodo primero.")
@@ -941,8 +1015,8 @@ class SkillTreeEditor:
         self.drag_start_y = event.y
 
     def move_selected_node(self, dx, dy):
-        #print(f'Moving node by dx: {dx}, dy: {dy}')  # Mensaje de depuración
         if self.selected_node:
+            
             node = self.nodes[self.selected_node]
             new_x = node.coordinates['x'] + dx
             new_y = node.coordinates['y'] + dy
@@ -957,6 +1031,7 @@ class SkillTreeEditor:
                 node.coordinates['y'] = new_y
                 self.node_matrix[cords] = self.selected_node
                 self.draw_nodes()
+                addLineLog(f"[!] Moved node {self.selected_node} to {new_x}, {new_y}")
     def move_node(self, event):
         if self.selected_node:
             x = (event.x - self.offset_x) // self.grid_size
@@ -1211,7 +1286,10 @@ class SkillTreeEditor:
         for key, node in self.nodes.items():
             self.node_matrix[(node.coordinates['x'], node.coordinates['y'])] = key
 
-if __name__ == "__main__":
+if __name__ == "__main__" and continueProgram:
+    
+    
+    
     root = tk.Tk()
     editor = SkillTreeEditor(root)
     root.mainloop()
