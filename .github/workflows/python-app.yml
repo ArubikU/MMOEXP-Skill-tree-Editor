@@ -14,8 +14,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
-          architecture: 'x64'
+          python-version: "3.7"
+          architecture: "x64"
 
       - name: Install requirements
         run: |
@@ -37,10 +37,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Python
+      - name: Install Python (macOS)
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
+          python-version: "3.8" # Use Python 3.8 or later
+          architecture: "x64" # Switch to x64 to avoid ARM64 issues
 
       - name: Install requirements
         run: |
@@ -62,13 +63,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Python
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
+          python-version: "3.8" # Upgrade to Python 3.8 for better package compatibility
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk python3-dev libyaml-dev  # Install Tkinter and libyaml
 
       - name: Install requirements
         run: |
+          pip install --upgrade pip  # Upgrade pip to the latest version
           pip install -r requirements.txt
 
       - name: Run PyInstaller (Linux)
