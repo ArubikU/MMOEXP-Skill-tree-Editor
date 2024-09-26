@@ -37,11 +37,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Homebrew and Gettext
+
+      - name: Install Homebrew
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          if ! command -v brew &> /dev/null; then
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          fi
+
+      - name: Install Gettext
+        run: |
           brew install gettext
           brew link --force gettext  # Ensure gettext is linked correctly
+
+      - name: Set environment variable for gettext
+        run: echo "DYLD_LIBRARY_PATH=$(brew --prefix gettext)/lib" >> $GITHUB_ENV
 
       - name: Install Python 3.8
         uses: actions/setup-python@v2
