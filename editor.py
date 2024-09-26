@@ -18,9 +18,14 @@ texturePath = f"{folder}\\textures.json"
 
 with open(texturePath, 'r',encoding="utf-8") as file:
     json_data = json.load(file)
+    
+configPath = f"{folder}\\conf.json"
+with open(configPath, 'r',encoding="utf-8") as file:
+    config_data = json.load(file)
+    
 textures = {}
-material = "YELLOW_DYE"
-version = "OLD"
+material = config_data["material"]
+version = config_data["version"]
 
 class AutoSuggestCombobox(ttk.Combobox):
     def __init__(self, master=None, **kwargs):
