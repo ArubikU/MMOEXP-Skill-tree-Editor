@@ -88,6 +88,19 @@ except Exception as e:
     
 writeLog()
 
+def on_paste(event):
+    try:
+        # Getting the text from the clipboard
+        clipboard_text = event.widget.clipboard_get()
+        widget = event.widget  # We get the widget where the event occurred
+        if isinstance(widget, tk.Entry):
+            widget.insert(tk.INSERT, clipboard_text)  # Inserting into the Entry field
+            
+        elif isinstance(widget, tk.Text):
+            widget.insert(tk.INSERT, clipboard_text)  # Inserting into a text field
+    except tk.TclError:
+        pass  # If the clipboard is empty or contains no text
+
 class AutoSuggestCombobox(ttk.Combobox):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -156,7 +169,7 @@ class AutoSuggestCombobox(ttk.Combobox):
         listbox.bind("<FocusOut>", self._on_listbox_focusout)
         listbox.bind("<Motion>", self._on_mouse_motion)
 
-        # Automatically select the first entry if no mouse hover has occurred yet
+        # Automatically select the first entry if the mouse cursor has not yet been hovered over
         if not listbox.curselection():
             listbox.selection_set(0)
 
@@ -291,9 +304,7 @@ class SkillNode:
         return str(self.additional_data)
 
 class SkillTreeEditor:
-    
-    
-    
+
     def __init__(self, master):
         self.master = master
         self.master.title("Skill Tree Editor")
@@ -338,7 +349,7 @@ class SkillTreeEditor:
                 continue
             self.list_colors.append(key)
 
-        # Frame para los botones
+        # Frame for the buttons
         button_frame = tk.Frame(master)
         button_frame.pack(side=tk.TOP, fill=tk.X)
         self.open_file_button = tk.Button(button_frame, text="Open New File", command=self.open_new_file)
@@ -385,7 +396,7 @@ class SkillTreeEditor:
         self.selected_node = None
         self.node_rectangles = {}
         self.block_rectangles = {}
-        self.scale = 1.0
+        self.scale = 1.1
         self.offset_x = 400
         self.offset_y = 400
         self.original_data = None
@@ -402,7 +413,10 @@ class SkillTreeEditor:
         self.draw_nodes()
         self.current_mouse_slot = (0, 0)
         self.canvas.bind("<Button-1>", self.select_node)
-        self.canvas.bind("<MouseWheel>", self.zoom)
+        
+        
+        #disabled zoom
+        #self.canvas.bind("<MouseWheel>", self.zoom)
         self.canvas.bind("<Motion>", self.motion_event)
         self.canvas.bind("<B1-Motion>", self.drag_canvas)
         self.canvas.bind("<ButtonRelease-1>", self.stop_drag)
@@ -434,60 +448,83 @@ class SkillTreeEditor:
     def switch_preview(self):
         self.preview = not self.preview
         self.draw_nodes()
-        
+
+    # Example of a method to open the add node window
     def open_add_node_window(self):
         if not self.selected_node:
-            messagebox.showwarning("Advertice!", "Select a node.")
+            messagebox.showwarning("I warned!", "Select a node.")
             return
 
         add_window = tk.Toplevel(self.master)
         add_window.title("Add new node")
 
+        # The "Name" input field
         ttk.Label(add_window, text="Name:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
         name_entry = ttk.Entry(add_window, width=40)
+        name_entry.bind("<Control-v>", on_paste)  # Binding Ctrl+V to insert
         name_entry.grid(row=0, column=1, padx=5, pady=5)
-        name_entry.insert(0, "<#CFFF30>Nuevo Nodo")
+        name_entry.insert(0, "<#ffe0cb>New Node")
 
+        # The "Rewards" input field
         ttk.Label(add_window, text="Rewards:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
         exp_entry = tk.Text(add_window, width=40, height=4)
+        exp_entry.bind("<Control-v>", on_paste)  # Binding Ctrl+V to insert
         exp_entry.grid(row=1, column=1, padx=5, pady=5)
         exp_entry.insert("1.0", "stat{stat=\"COOLDOWN_REDUCTION\";amount=1;type=\"FLAT\"}")
 
+        # The "Lore" input field
         ttk.Label(add_window, text="Lore:").grid(row=2, column=0, sticky="e", padx=5, pady=5)
         lores_text = tk.Text(add_window, width=40, height=4)
+        lores_text.bind("<Control-v>", on_paste)  # Binding Ctrl+V to insert
         lores_text.grid(row=2, column=1, padx=5, pady=5)
-        lores_text.insert("1.0", "&8 Reduce el enfriamiento de tus\n&8 habilidades en un +&a1%")
+        lores_text.insert("1.0", "&8 Reduce the cool-down\n&8 of your skills by a +&a1%")
 
+        # Input field "Max Level"
         ttk.Label(add_window, text="Max Level:").grid(row=3, column=0, sticky="e", padx=5, pady=5)
         max_level_entry = ttk.Entry(add_window, width=40)
         max_level_entry.grid(row=3, column=1, padx=5, pady=5)
         max_level_entry.insert(0, "1")
-        ttk.Label(add_window, text="Childs:").grid(row=3, column=0, sticky="e", padx=5, pady=5)
+
+        # The "Childs" input field
+        ttk.Label(add_window, text="Childs:").grid(row=4, column=0, sticky="e", padx=5, pady=5)
         max_childs = ttk.Entry(add_window, width=40)
-        max_childs.grid(row=3, column=1, padx=5, pady=5)
+        max_childs.grid(row=4, column=1, padx=5, pady=5)
         max_childs.insert(0, "1")
-        
-        
 
-        ttk.Label(add_window, text="Points:").grid(row=4, column=0, sticky="e", padx=5, pady=5)
+        # The "Points" input field
+        ttk.Label(add_window, text="Points:").grid(row=5, column=0, sticky="e", padx=5, pady=5)
         points_entry = ttk.Entry(add_window, width=40)
-        points_entry.grid(row=4, column=1, padx=5, pady=5)
+        points_entry.grid(row=5, column=1, padx=5, pady=5)
         points_entry.insert(0, "1")
-
-        data = {
-            'name': name_entry.get(),
-            'rewards': exp_entry.get("1.0", tk.END),
-            'lore': lores_text.get("1.0", tk.END),
-            'maxLevel': max_level_entry.get(),
-            'points': max_level_entry.get(),
-            'maxChilds': max_childs.get(),
+        fields =  {
+            'name_entry': name_entry,
+            'exp_entry': exp_entry,
+            'lores_text': lores_text,
+            'max_level_entry': max_level_entry,
+            'points_entry': points_entry,
+            'max_childs': max_childs,
+            
         }
-
-        ttk.Button(add_window, text="Add node", command=lambda: self.add_node(
+        # Generating data for a node
+        # The button for adding a node
+        ttk.Button(add_window, text="Add node", command=lambda: self.pre_add_node(
+            add_window,fields
+        )).grid(row=6, column=0, columnspan=2, pady=10)
+    def pre_add_node(self, add_window,fields):
+        
+        data = {
+            'name': fields['name_entry'].get(),
+            'rewards': fields['exp_entry'].get("1.0", tk.END),
+            'lore': fields['lores_text'].get("1.0", tk.END),
+            'maxLevel': fields['max_level_entry'].get(),
+            'points': fields['points_entry'].get(),
+            'maxChilds': fields['max_childs'].get(),
+        }
+        self.add_node(
             nodeData=data,
             window=add_window
-        )).grid(row=5, column=0, columnspan=2, pady=10)
-
+        )
+        
     def add_node(self, nodeData, window):
         if self.selected_node:
             selected = self.nodes[self.selected_node]
@@ -533,9 +570,9 @@ class SkillTreeEditor:
                     window.destroy()
                     return
             addLineLog(f"[!] No space to add node")
-            messagebox.showwarning("Advertencia", "No hay espacio libre alrededor del nodo seleccionado.")
+            messagebox.showwarning("Warning", "There is no free space around the selected node.")
         else:
-            messagebox.showwarning("Advertencia", "Selecciona un nodo primero.")
+            messagebox.showwarning("Warning", "Select a node first.")
     
     def double_click_event(self, event):
         if self.selected_node:
@@ -620,25 +657,25 @@ class SkillTreeEditor:
         return angle_deg
 
     def is_visible(self, xcord, ycord):
-        # Convertir las coordenadas del nodo al sistema de coordenadas del canvas
+        # Convert the coordinates of the node to the coordinate system of the canvas
         x = (xcord * self.grid_size * self.scale) + self.offset_x
         y = (ycord * self.grid_size * self.scale) + self.offset_y
 
-        # Obtener los bordes visibles del canvas
+        # Get the visible edges of the canvas
         canvas_width = self.canvas.winfo_width()
         canvas_height = self.canvas.winfo_height()
 
-        # Definir los límites del área visible
+        # Define the limits of the visible area
         visible_left = 0
         visible_right = canvas_width
         visible_top = 0
         visible_bottom = canvas_height
 
-        # Verificar si el nodo está dentro del área visible del canvas
+        # Checks if the node is in the visible area of the canvas
         return (visible_left <= x <= visible_right) and (visible_top <= y <= visible_bottom)
 
 
-# Métodos auxiliares para convertir coordenadas de cuadrícula a canvas
+# Auxiliary methods for converting grid coordinates to canvas
     @lru_cache(maxsize=None)
     def canvas_x(self, x):
         return (x * self.scale) + self.offset_x
@@ -651,19 +688,19 @@ class SkillTreeEditor:
 
     @lru_cache(maxsize=None)
     def bfs_path(self, start, goal):
-        # Generar el grafo de manera dinámica
+        # Dynamically generates a graph
         graph = {}
         
-        # Definir el tamaño del área del grafo
-        area_size = 40  # Por ejemplo, de -5 a 5 en ambos ejes
+        # Defines the size of the graph area
+        area_size = 40  # For example, from -5 to 5 on both axes
 
-        # Construir el grafo
+        # Constructing the graph
         for x in range(-area_size, area_size + 1):
             for y in range(-area_size, area_size + 1):
                 node = (x, y)
                 graph[node] = []
-                # Añadir conexiones a los vecinos
-                for direction in [(0, 1), (1, 0), (0, -1), (-1, 0)]:  # derecha, abajo, izquierda, arriba
+                # Adding connections to neighbors
+                for direction in [(0, 1), (1, 0), (0, -1), (-1, 0)]:  # right, down, left, up
                     neighbor = (x + direction[0], y + direction[1])
                     if(neighbor in self.blocked_nodes): continue
                     if(neighbor in self.bfs_path_used): continue
@@ -671,45 +708,45 @@ class SkillTreeEditor:
                         continue
                     graph[node].append(neighbor) 
 
-        # Inicializa la cola y el mapa came_from
+        # Initialize the queue and the came_from map
         queue = deque([start])
         came_from = {start: None}
-        print(f'Start: {start}, Goal: {goal}')  # Mensaje de depuración
+        print(f'Start: {start}, Goal: {goal}')  # Debugging message
 
         while queue:
             current = queue.popleft()
-            #print(f'Current: {current}')  # Mensaje de depuración
+            #print(f'Current: {current}')  # Debugging message
 
-            # Explora los vecinos del nodo actual usando el grafo generado
-            if current not in graph:  # Asegúrate de que el nodo actual esté en el grafo
-                #print(f'Warning: Current node {current} not in graph.')  # Mensaje de advertencia
-                continue  # Salir si el nodo no está en el grafo
+            # Scans the neighbors of the current node using the generated graph
+            if current not in graph:  # Make sure the current node is in the graph
+                #print(f'Warning: Current node {current} not in graph.')  # Warning message
+                continue  # Exit if the node is not in the graph
 
-            # Verifica si hemos llegado al objetivo
+            # Check if we have reached the goal
             if current == goal:
-                #print('Goal reached!')  # Mensaje de depuración
+                #print('Goal reached!')  # Debugging message
                 break
             
-            # Agregar los vecinos a la cola si no han sido visitados
+            # Add neighbors to the queue if they have not been visited
             for neighbor in graph[current]:
-                if neighbor not in came_from:  # Asegúrate de no visitar nodos ya explorados
+                if neighbor not in came_from:  # Make sure not to visit already explored nodes
                     queue.append(neighbor)
                     came_from[neighbor] = current
-                    #print(f'Added to queue: {neighbor}')  # Mensaje de depuración
+                    #print(f'Added to queue: {neighbor}')  # Debugging message
 
-        # Reconstruye el camino
+        # Rebuild the road
         path = []
         current = goal
-        if current not in came_from:  # Si no se alcanzó el objetivo
-            print('Goal not reachable.')  # Mensaje de depuración
-            return []  # Retorna un camino vacío si el objetivo no fue alcanzable
+        if current not in came_from:  # If the target was not reached
+            print('Goal not reachable.')  # Debugging message
+            return []  # Returns an empty path if the goal was not achievable
 
         while current is not None:
             path.append(current)
             current = came_from[current]
 
-        path.reverse()  # Invierte el camino para obtener el orden correcto
-        #remueve la cordenada de inicio y final
+        path.reverse()  # Reverse the path to get the right order
+        #remove the start and end string
         for i in range(0, len(path)):
             if path[i] == start:
                 path.pop(i)
@@ -719,13 +756,13 @@ class SkillTreeEditor:
                 path.pop(i)
                 break
         
-        print(f'Path: {path}')  # Mensaje de depuración
+        print(f'Path: {path}')  # Debugging message
         return path
     
     
     @lru_cache(maxsize=None)
     def is_valid(self,coordinate):
-        # Check if the coordinate is within the grid and not blocked by an existing node
+        # Check if the coordinate is within the grid and is not blocked by an existing node
         x, y = coordinate
         return not self.is_node_occupied(coordinate)
 
@@ -784,7 +821,7 @@ class SkillTreeEditor:
             self.save_state()
             self.draw_nodes()
         except Exception as e:
-            messagebox.showerror("Error", f"Error al cargar el archivo: {e}")
+            messagebox.showerror("Error", f"Error loading the file: {e}")
 
     def draw_grid(self):
         self.canvas.delete("grid")
@@ -802,14 +839,14 @@ class SkillTreeEditor:
             x2 = self.canvas_x(1200)
             self.canvas.create_line(x1, y1, x2, y2, fill="lightgray", tags="grid")
         
+    @lru_cache(maxsize=2)
     def create_detection_rectangle(self, xcord, ycord):
-        if self.is_visible(xcord, ycord):
-                x = self.canvas_x((xcord + 0.5) * self.grid_size)
-                y = self.canvas_y(-(ycord + 0.5) * self.grid_size)
-                #create transparent rectangle to detect mause click
-                d = self.canvas.create_rectangle(x-self.node_size/2, y-self.node_size/2, x+self.node_size/2, y+self.node_size/2, fill="", outline="", tags="filler")
-                return d
-        return None
+        #if self.is_visible(xcord, ycord):
+        x = self.canvas_x((xcord + 0.5) * self.grid_size)
+        y = self.canvas_y(-(ycord + 0.5) * self.grid_size)
+        #create transparent rectangle to detect mause click
+        d = self.canvas.create_rectangle(x-self.node_size/2, y-self.node_size/2, x+self.node_size/2, y+self.node_size/2, fill="", outline="", tags="filler")
+        return d
     
     def draw_nodes(self):
         self.canvas.delete("node", "text", "line", "selection")
@@ -820,6 +857,7 @@ class SkillTreeEditor:
                 de = self.create_detection_rectangle(xcord, ycord)
                 if de is not None:
                     self.detection_rectangles[(xcord, ycord)] = de
+                    
         # Draw lines first
         self.bfs_path_used = []
         for key, node in self.nodes.items():
@@ -878,16 +916,16 @@ class SkillTreeEditor:
                                     else:
                                         nextx, nexty = parent_node.coordinates['x'], parent_node.coordinates['y']
                                     
-                                    # Deltas entre los puntos anterior, actual y siguiente
+                                    # Deltas between the previous, current and next points
                                     dx_prev, dy_prev = currentx - prevx, currenty - prevy
                                     dx_next, dy_next = nextx - currentx, nexty - currenty
                                     
                                     castext = ""
-                                    # Detectar si hay un giro comparando los cambios de dirección
+                                    # Detect if there is a turn by comparing the changes of direction
                                     if (dx_prev != dx_next) or (dy_prev != dy_next):
-                                       # print(f'Esquina detectada en: {currentx},{currenty}')
-                                        # Lógica para detectar direcciones
-                                        if dx_prev == 0 and dy_prev == 1:  # De abajo hacia arriba
+                                       # print(f'Corner detected en: {currentx},{currenty}')
+                                        # Logic to detect addresses
+                                        if dx_prev == 0 and dy_prev == 1:  # From the bottom up
                                             if dx_next == 1 and dy_next == 0:
                                                 direction = "down-right"
                                                 castext = "#1"
@@ -897,7 +935,7 @@ class SkillTreeEditor:
                                             else:
                                                 direction = "up"
                                                 castext = "#3"
-                                        elif dx_prev == 0 and dy_prev == -1:  # De arriba hacia abajo
+                                        elif dx_prev == 0 and dy_prev == -1:  # From top to bottom
                                             if dx_next == 1 and dy_next == 0:
                                                 direction = "up-right"
                                                 castext = "#4"
@@ -907,9 +945,9 @@ class SkillTreeEditor:
                                             else:
                                                 direction = "down"
                                                 castext = "#6"
-                                        elif dx_prev == 1 and dy_prev == 0:  # De izquierda a derecha
+                                        elif dx_prev == 1 and dy_prev == 0:  # From left to right
                                             if dx_next == 0 and dy_next == 1:
-                                                direction = "down-right"
+                                                direction = "up-left"
                                                 castext = "#7"
                                             elif dx_next == 0 and dy_next == -1:
                                                 direction = "down-left"
@@ -917,7 +955,7 @@ class SkillTreeEditor:
                                             else:
                                                 direction = "right"
                                                 castext = "#9"
-                                        elif dx_prev == -1 and dy_prev == 0:  # De derecha a izquierda
+                                        elif dx_prev == -1 and dy_prev == 0:  # From right to left
                                             if dx_next == 0 and dy_next == 1:
                                                 direction = "up-right"
                                                 castext = "#10"
@@ -927,7 +965,7 @@ class SkillTreeEditor:
                                             else:
                                                 direction = "left"
                                                 castext = "#12"
-                                        else:  # Esquinas diagonales
+                                        else:  # Diagonal corners
                                             if dx_prev == 1 and dy_prev == 1:
                                                 direction = "up-right"
                                                 castext = "#13"
@@ -941,7 +979,7 @@ class SkillTreeEditor:
                                                 direction = "down-left"
                                                 castext = "#16"
                                         
-                                        # Asignar el ícono según la dirección detectada
+                                        # Assign the icon according to the detected address
                                     cordinateForImage = self.canvas_x((currentx + 0.5) * self.grid_size), self.canvas_y(-(currenty + 0.5) * self.grid_size)
                                     self.canvas.create_image(cordinateForImage[0], cordinateForImage[1], image=textures[direction], tags="node")
 
@@ -986,7 +1024,7 @@ class SkillTreeEditor:
             x = self.canvas_x((node[0] + 0.5) * self.grid_size)
             y = self.canvas_y(-(node[1] + 0.5) * self.grid_size)
             blocknode = self.canvas.create_image(x, y, image=textures['blocked'], tags="node")
-            print(f'Blocked node at {node}')  # Mensaje de depuración
+            print(f'The blocked Node in {node}')  # Debugging message
             self.block_rectangles[(node[0], node[1])] = blocknode
 
     def canvas_x(self, x):
@@ -996,27 +1034,40 @@ class SkillTreeEditor:
         return (y - self.offset_y) * self.scale + self.offset_y
 
     def select_node(self, event):
-        print(f'Selected node: {self.selected_node}')  # Mensaje de depuración
-        item = self.canvas.find_closest(event.x, event.y)[0]
-        for key, rect in self.node_rectangles.items():
-            if rect == item:
-                self.selected_node = key
-                self.draw_nodes()
-                return
-        for key, rect in self.block_rectangles.items():
-            if rect == item:
-                self.selected_blocknode = key
-                self.draw_nodes()
-                return
-        self.selected_blocknode = None
-        self.selected_node = None
+        def get_selected_item(item_rectangles):
+            """Returns the key of the selected item, if it is found."""
+            item = self.canvas.find_closest(event.x, event.y)[0]
+            for key, rect in item_rectangles.items():
+                if rect == item:
+                    return key
+            return None
+
+        # We determine the nearest element and look for whether it is a node or a block
+        selected_node = get_selected_item(self.node_rectangles)
+        selected_blocknode = get_selected_item(self.block_rectangles)
+
+        if selected_node is not None:
+            self.selected_node = selected_node
+            self.selected_blocknode = None
+            print(f'A node has been selected: {self.selected_node}')
+        elif selected_blocknode is not None:
+            self.selected_blocknode = selected_blocknode
+            self.selected_node = None
+            print(f'The block node is selected: {self.selected_blocknode}')
+        else:
+            self.selected_node = None
+            self.selected_blocknode = None
+            print('Nothing is selected')
+
         self.draw_nodes()
+
+        # Saving the initial coordinates for possible further dragging
         self.drag_start_x = event.x
         self.drag_start_y = event.y
 
     def move_selected_node(self, dx, dy):
         if self.selected_node:
-            
+
             node = self.nodes[self.selected_node]
             new_x = node.coordinates['x'] + dx
             new_y = node.coordinates['y'] + dy
@@ -1034,11 +1085,15 @@ class SkillTreeEditor:
                 addLineLog(f"[!] Moved node {self.selected_node} to {new_x}, {new_y}")
     def move_node(self, event):
         if self.selected_node:
-            x = (event.x - self.offset_x) // self.grid_size
-            y = (self.offset_y - event.y) // self.grid_size
-            x += 10
-            y -= 5
-            
+            #x = (event.x - self.offset_x) // self.grid_size
+            #y = (self.offset_y - event.y) // self.grid_size
+            #x += 10
+            #y -= 5
+            mause =  self.get_mouse_grid_slot(event)
+            if mause is None:
+                return
+            x = mause[0]
+            y = mause[1]
             if (x, y) not in self.node_matrix or self.node_matrix[(x, y)] == self.selected_node:
                 if((x,y) in self.blocked_nodes ):
                     return
@@ -1058,52 +1113,73 @@ class SkillTreeEditor:
         #self.grid_size = round(self.grid_size)
         self.defaultRender()
 
-
     def drag_canvas(self, event):
-        if self.selected_node is None:
-            # Calculate the drag distance in canvas coordinates
-            canvas_dx = (event.x - self.drag_start_x) 
-            canvas_dy = (event.y - self.drag_start_y) 
-            
-            canvas_dx = canvas_dx * abs(self.scale)
-            canvas_dy = canvas_dy * abs(self.scale)
-            
-            print(f'Dragging canvas by dx: {canvas_dx}, dy: {canvas_dy}')  # Mensaje de depuración
-            print(f'Offsets: X: {self.offset_x}, Y: {self.offset_y}')
-                
-            # Update the offset
-            self.offset_x += canvas_dx
-            self.offset_y += canvas_dy
-            print(f'Offsets post: X: {self.offset_x}, Y: {self.offset_y}')
-            
-            # Update the drag start position
-            self.drag_start_x = event.x
-            self.drag_start_y = event.y
-            
-            # Redraw the canvas
-            self.defaultRender()
+        try:
+            # If the node is not selected, move the canvas
+            if self.selected_node is None:
+                # Checking for initialization of the coordinates of the beginning of the movement
+                if not hasattr(self, 'drag_start_x') or not hasattr(self, 'drag_start_y'):
+                    raise AttributeError("drag_start_x or drag_start_y were not initialized")
 
-        else:
-            self.move_node(event)
+                # Checking that the scale is set and not equal to zero
+                if self.scale == 0:
+                    raise ValueError("The scale cannot be equal to 0")
+
+                # Calculating the offset based on the scale
+                canvas_dx = (event.x - self.drag_start_x) * self.scale
+                canvas_dy = (event.y - self.drag_start_y) * self.scale
+
+                # Logging of movements
+                print(f'Dragging canvas by dx: {canvas_dx}, dy: {canvas_dy}')
+                print(f'Offsets before: X: {self.offset_x}, Y: {self.offset_y}')
+
+                # Updating the offsets
+                self.offset_x += canvas_dx
+                self.offset_y += canvas_dy
+
+                print(f'Offsets after: X: {self.offset_x}, Y: {self.offset_y}')
+
+                # Updating the starting coordinates for the next move
+                self.drag_start_x = event.x
+                self.drag_start_y = event.y
+
+                # Redrawing the canvas
+                self.defaultRender()
+
+            # If the node is selected, move it
+            else:
+                self.move_node(event)
+
+        except AttributeError as e:
+            print(f'Error: {e}')
+        except ValueError as e:
+            print(f'Error: {e}')
 
     def stop_drag(self, event):
         self.drag_start_x = 0
         self.drag_start_y = 0
+        
+    @lru_cache(maxsize=None)
     def get_mouse_grid_slot(self, event):
         #get closes with tag filler
-        item = self.canvas.find_closest(event.x, event.y)[0]
-        if(item in self.detection_rectangles.values()):
-            for key, rect in self.detection_rectangles.items():
-                if rect == item:
-                    return key
-        elif item in self.node_rectangles.values():
-            for key, rect in self.node_rectangles.items():
-                if rect == item:
-                    return self.nodes[key].coordinates['x'], self.nodes[key].coordinates['y']
-        elif item in self.block_rectangles.values():
-            for key, rect in self.block_rectangles.items():
-                if rect == item:
-                    return key
+        items = self.canvas.find_closest(event.x, event.y)
+        maxIndex = 2
+        for ide in range(0, len(items)):
+            if ide > maxIndex:
+                break
+            item = items[ide] 
+            if(item in self.detection_rectangles.values()):
+                for key, rect in self.detection_rectangles.items():
+                    if rect == item:
+                        return key
+            elif item in self.node_rectangles.values():
+                for key, rect in self.node_rectangles.items():
+                    if rect == item:
+                        return self.nodes[key].coordinates['x'], self.nodes[key].coordinates['y']
+            elif item in self.block_rectangles.values():
+                for key, rect in self.block_rectangles.items():
+                    if rect == item:
+                        return key
         
     def motion_event(self, event):
         item = self.canvas.find_closest(event.x, event.y)[0]
@@ -1202,8 +1278,8 @@ class SkillTreeEditor:
         self.original_data['extra'] = data['extra']
         self.original_data['nodes'] = data['nodes']
         with open(save_name, 'w', encoding='utf-8') as file:
-            yaml.dump(self.original_data, file,encoding='utf-8')
-        messagebox.showinfo("Guardar", f"Cambios guardados en {save_name}")
+            yaml.dump(self.original_data, file, allow_unicode=True, default_flow_style=False)
+        messagebox.showinfo("Save", f"Changes saved in {save_name}")
 
     def save_data_ry(self):
         save_name = filedialog.asksaveasfilename(filetypes=[("YAML files", "*.yml;*.yaml")])
@@ -1252,7 +1328,7 @@ class SkillTreeEditor:
         } for key, node in newnodes.items()}}
         with open(save_name, 'w', encoding='utf-8') as file:
             yaml.dump(data, file,encoding='utf-8')
-        messagebox.showinfo("Guardar", f"Cambios guardados en {save_name}")
+        messagebox.showinfo("Save", f"Changes saved in {save_name}")
 
     def reset_to_original(self):
         

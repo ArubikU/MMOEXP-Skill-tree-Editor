@@ -37,4 +37,7 @@
 
 # License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
-```
+
+# Credits
+- [https://discord.com/users/616338640158720019](VacAge) Some optimization and added support for more langs
+``` 
