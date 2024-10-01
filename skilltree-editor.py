@@ -806,8 +806,13 @@ class SkillTreeEditor:
                     self.original_data['extra'] = {}
                     
                 for key, value in self.original_data['nodes'].items():
-                    x = value['coordinates']['x']
-                    y = value['coordinates']['y']
+                    if "x" in value["coordinates"]:
+                        x = value['coordinates']['x']
+                        y = value['coordinates']['y']
+                    else:
+                        splited = value['coordinates'].split(",")
+                        x = int(splited[0])
+                        y = int(splited[1])
                     #make x a full int no, no decimals
                     x = round(x)
                     y = round(y)
@@ -821,7 +826,7 @@ class SkillTreeEditor:
             self.save_state()
             self.draw_nodes()
         except Exception as e:
-            messagebox.showerror("Error", f"Error loading the file: {e}")
+            messagebox.showerror("Error", f"Error loading the file: {filename} with error {e}")
 
     def draw_grid(self):
         self.canvas.delete("grid")
@@ -1249,8 +1254,6 @@ class SkillTreeEditor:
                     #verify if distance between nodes is 1
                     if self.verifyIsAdyacent((parentx, parenty), (currx, curry)):
                         continue
-                    elif self.isDistanceTwo((parentx, parenty), (currx, curry)):
-                        paths[key] = {'path': {'x': currx, 'y': curry}}
                     else:
                         start = (parentx, parenty)
                         goal = (currx, curry)
@@ -1274,6 +1277,11 @@ class SkillTreeEditor:
             'parents': node.parents,
             **node.additional_data
         } for key, node in newnodes.items()}}
+        
+        for node in data['nodes']:
+            if version == "NEW":
+                cords = data['nodes'][node]['coordinates']
+                data['nodes'][node]['coordinates'] = f'{cords["x"]},{cords["y"]}'
         
         self.original_data['extra'] = data['extra']
         self.original_data['nodes'] = data['nodes']
