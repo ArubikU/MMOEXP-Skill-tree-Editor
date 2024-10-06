@@ -1,7 +1,18 @@
-
+import copy
 import datetime
+import json
+import math
 import os
+import re
 import sys
+import tkinter as tk
+from collections import deque
+from functools import lru_cache
+from tkinter import filedialog, messagebox, ttk
+
+import PIL.Image
+import PIL.ImageTk
+import yaml
 
 
 def get_base_path():
@@ -11,24 +22,24 @@ def get_base_path():
     else:
         # If the application is run as a script, use the directory of the script
         return os.path.dirname(os.path.abspath(__file__))
-if getattr(sys, 'frozen', False):
-    sourcePath = os.path.dirname(sys.executable)
-    basePath = get_base_path()
 
-    files_to_copy = ['textures.json', 'conf.json']
+def find_file(filename):
+    # List of possible locations to search for the file
+    search_paths = [
+        os.path.dirname(sys.executable),  # Executable's directory
+        get_base_path(),                  # Base path
+        os.path.dirname(os.path.abspath(__file__)),  # script dir
+        os.getcwd(),                      # Current working directory
+        
+    ]
 
-    for file in files_to_copy:
-        destination = os.path.join(basePath, file)
-        if not os.path.exists(destination):
-            source = os.path.join(sourcePath, file)
-            try:
-                with open(source, 'rb') as src_file, open(destination, 'wb') as dst_file:
-                    dst_file.write(src_file.read())
-                print(f"Copied {file} to {destination}")
-            except IOError as e:
-                print(f"Unable to copy {file}. Error: {e}")
-            except Exception as e:
-                print(f"Unexpected error occurred while copying {file}: {e}")
+    for path in search_paths:
+        file_path = os.path.join(path, filename)
+        if os.path.exists(file_path):
+            return file_path
+    
+    return None  # File not found
+
 
 
 folder = get_base_path()
@@ -60,21 +71,36 @@ def addLineLog(line):
         formatedTime = time.strftime("%Y-%m-%d %H:%M")
         file.write(f"{line} [{formatedTime}]\n")
 
+
+
 writeLog()
         
-try:
-    import copy
-    import json
-    import math
-    import re
-    import tkinter as tk
-    from collections import deque
-    from functools import lru_cache
-    from tkinter import filedialog, messagebox, ttk
+        
 
-    import PIL.Image
-    import PIL.ImageTk
-    import yaml
+if getattr(sys, 'frozen', False):
+    basePath = get_base_path()
+
+    files_to_copy = ['textures.json', 'conf.json', 'textures/Botones.png']
+
+    for file in files_to_copy:
+        destination = os.path.join(basePath, file)
+        if not os.path.exists(destination):
+            source = find_file(file)
+            if source:
+                try:
+                    with open(source, 'rb') as src_file, open(destination, 'wb') as dst_file:
+                        dst_file.write(src_file.read())
+                    addLineLog(f"[!] Copied {file} to {destination}")
+                except IOError as e:
+                    addLineLog(f"[!] Unable to copy {file}. Error: {e}")
+                except Exception as e:
+                    addLineLog(f"[!] Unexpected error occurred while copying {file}: {e}")
+            else:
+                addLineLog(f"[!] Unable to find {file} in any of the search paths.")
+        else:
+            addLineLog(f"[!] {file} already exists in {basePath}")
+        
+try:
 
     continueProgram = True
             
@@ -443,7 +469,7 @@ try:
             
             
             #disabled zoom
-            #self.canvas.bind("<MouseWheel>", self.zoom)
+            self.canvas.bind("<MouseWheel>", self.zoom)
             self.canvas.bind("<Motion>", self.motion_event)
             self.canvas.bind("<B1-Motion>", self.drag_canvas)
             self.canvas.bind("<ButtonRelease-1>", self.stop_drag)

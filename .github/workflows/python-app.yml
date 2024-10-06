@@ -31,40 +31,41 @@ jobs:
           name: Skilltree-editor-Windows
           path: dist/skilltree-editor.exe
 
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.8" # Upgrade to Python 3.8 for better package compatibility
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-tk python3-dev libyaml-dev  # Install Tkinter and libyaml
-
-      - name: Install requirements
-        run: |
-          pip install --upgrade pip  # Upgrade pip to the latest version
-          pip install -r requirements.txt
-
-      - name: Run PyInstaller (Linux)
-        run: |
-          python -m PyInstaller skilltree-editor.spec
-
-      - name: Upload Linux build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Skilltree-editor-Linux
-          path: dist/skilltree-editor.bin
-
+#  build-linux:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Python 3.8
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: "3.8" # Upgrade to Python 3.8 for better package compatibility
+#
+#      - name: Install system dependencies
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y python3-tk python3-dev libyaml-dev  # Install Tkinter and libyaml
+#
+#      - name: Install requirements
+#        run: |
+#          pip install --upgrade pip  # Upgrade pip to the latest version
+#          pip install -r requirements.txt
+#
+#      - name: Run PyInstaller (Linux)
+#        run: |
+#          python -m PyInstaller skilltree-editor.spec
+#
+#      - name: Upload Linux build artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: Skilltree-editor-Linux
+#          path: dist/skilltree-editor.bin
+#
   create-release:
     #needs: [build-windows, build-macos, build-linux]
-    needs: [build-windows, build-linux]
+    #needs: [build-windows, build-linux]
+    needs: [build-windows]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -93,12 +94,12 @@ jobs:
           asset_name: Skilltree-editor-Windows
           asset_content_type: application/octet-stream
 
-      - name: Upload Linux Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/skilltree-editor.bin
-          asset_name: Skilltree-editor-Linux
-          asset_content_type: application/octet-stream
+      #- name: Upload Linux Release Asset
+      #  uses: actions/upload-release-asset@v1
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #    asset_path: dist/skilltree-editor.bin
+      #    asset_name: Skilltree-editor-Linux
+      #    asset_content_type: application/octet-stream
