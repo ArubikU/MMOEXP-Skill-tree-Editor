@@ -23,7 +23,7 @@ jobs:
 
       - name: Run PyInstaller (Windows)
         run: |
-          python -m PyInstaller skilltree-editor.spec
+          python -m PyInstaller skilltree-editor.spec 
 
       - name: Upload Windows build artifact
         uses: actions/upload-artifact@v3
