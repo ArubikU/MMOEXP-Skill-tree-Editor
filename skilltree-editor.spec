@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['skilltree-editor.py'],
-             binaries=[],datas=[('textures.json', '.'), ('conf.json', '.'), ('textures/Botones.png', '.')],
+             binaries=[],datas=[('textures.json', '.'), ('conf.json', '.'), ('textures\Botones.png', '.')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
