@@ -1,7 +1,15 @@
-extra: {}
+custom-model-data: 426
+extra:
+  blocked_nodes: []
+id: general
+item: YELLOW_DYE
+lore:
+- '&6This skill tree is used for combat abilities!'
+max-point-spent: 11
+name: '&4General'
 nodes:
-  a1:
-    coordinates: -4,0
+  a20:
+    coordinates: 3,-7
     display:
       fully-locked:
         custom-model-data: 413
@@ -10,71 +18,29 @@ nodes:
         custom-model-data: 412
         item: YELLOW_DYE
       unlockable:
-        custom-model-data: 418
+        custom-model-data: 419
         item: YELLOW_DYE
       unlocked:
-        custom-model-data: 425
+        custom-model-data: 422
         item: YELLOW_DYE
-    experience-table:
+    experience_table:
       first_table_item:
         triggers:
         - stat{stat="COOLDOWN_REDUCTION";amount=1;type="FLAT"}
-    is-root: true
-    lores:
-      0:
-      - '&8 Reduce el enfriamiento de tus'
-      - '&8 habilidades en un +&a1%'
-      1:
-      - '&8 &mReduce el enfriamiento de tus'
-      - '&8 &mhabilidades en un +1%'
+    is_root: false
+    lore:
+      0: '&8 Reduce the cool-down'
+      1: '&8 of your skills by a +&a1%'
+    max-childer: 1
     max-level: 1
-    name: <#CFFF30>Reducción de enfriamiento I
-    parents: {}
-    paths:
-      a2:
-        path1: -3,0
-    point-consumed: 1
-    size: 1
-  a2:
-    coordinates: -2,0
-    display:
-      fully-locked:
-        custom-model-data: 413
-        item: YELLOW_DYE
-      locked:
-        custom-model-data: 412
-        item: YELLOW_DYE
-      unlockable:
-        custom-model-data: 418
-        item: YELLOW_DYE
-      unlocked:
-        custom-model-data: 425
-        item: YELLOW_DYE
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="COOLDOWN_REDUCTION";amount=2;type="FLAT"}
-    lores:
-      0:
-      - '&8 Reduce el enfriamiento de tus'
-      - '&8 habilidades en un +&a1%'
-      1:
-      - '&8 Reduce el enfriamiento de tus'
-      - '&8 habilidades en un +&a2% &8(&e+2%&8)'
-      2:
-      - '&8 &mReduce el enfriamiento de tus'
-      - '&8 &mhabilidades en un +4%'
-    max-level: 2
-    name: <#CFFF30>Reducción de enfriamiento II
+    name: <#ffe0cb>New Node
     parents:
       strong:
-        a1: 1
-    paths:
-      a3:
-        path1: -1,0
-    point-consumed: 2
+        start: 1
+    paths: {}
+    point-consumed: 1
     size: 1
-  a3:
+  node_1:
     coordinates: 0,0
     display:
       fully-locked:
@@ -84,213 +50,70 @@ nodes:
         custom-model-data: 412
         item: YELLOW_DYE
       unlockable:
-        custom-model-data: 418
+        custom-model-data: 419
         item: YELLOW_DYE
       unlocked:
-        custom-model-data: 425
+        custom-model-data: 422
         item: YELLOW_DYE
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="COOLDOWN_REDUCTION";amount=3;type="FLAT"}
+        - stat{stat="health_regeneration";amount=5;type="FLAT"}
     lores:
       0:
-      - '&8 Reduce el enfriamiento de tus'
-      - '&8 habilidades en un +&a3%'
+      - '&8+2%'
       1:
-      - '&8 Reduce el enfriamiento de tus'
-      - '&8 habilidades en un +&a3% &8(&e+3%&8)'
-      2:
-      - '&8 Reduce el enfriamiento de tus'
-      - '&8 habilidades en un +&a6% &8(&e+3%&8)'
-      3:
-      - '&8 &mReduce el enfriamiento de tus'
-      - '&8 &mhabilidades en un +9%'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Reducción de enfriamiento&8:&e +14%'
-    max-level: 3
-    name: <#CFFF30>Reducción de enfriamiento III
+      - '&a+2%'
+    max-children: 1
+    max-level: 1
+    name: '&fHealth Regeneration'
     parents:
       strong:
-        a2: 2
+        start: 1
     paths:
-      b1:
-        path1: 0,-1
-      c1:
+      node_2:
         path1: 0,1
-    point-consumed: 3
-    size: 1
-  b1:
-    coordinates: 0,-2
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="LIFESTEAL";amount=1;type="FLAT"}
-    lores:
-      0:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +&a1%'
-      1:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +1%'
-    max-children: 1
-    max-level: 1
-    name: <#CFFF30>Robo de vida I
-    parents:
-      soft:
-        a3: 3
-    paths:
-      b2:
-        path1: 0,-3
     point-consumed: 1
     size: 1
-  b2:
-    coordinates: 0,-4
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="LIFESTEAL";amount=1;type="FLAT"}
-    lores:
-      0:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +&a1%'
-      1:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +2%'
-    max-children: 1
-    max-level: 2
-    name: <#CFFF30>Robo de vida II
-    parents:
-      soft:
-        b1: 1
-    paths:
-      b3:
-        path1: 1,-4
-    point-consumed: 2
-    size: 1
-  b3:
-    coordinates: 2,-4
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="LIFESTEAL";amount=1;type="FLAT"}
-    lores:
-      0:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +&a1%'
-      1:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +&a2% &8(&e+1%&8)'
-      3:
-      - '&8 Recupera tu salud cuando '
-      - '&8 hagas daño en un +3%'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Robo de vida&8:&e +6%'
-    max-children: 1
-    max-level: 3
-    name: <#CFFF30>Robo de vida III
-    parents:
-      soft:
-        b2: 2
-    paths:
-      e1:
-        path1: 2,-3
-    point-consumed: 3
-    size: 1
-  c1:
+  node_2:
     coordinates: 0,2
+    display:
+      fully-locked:
+        custom-model-data: 413
+        item: YELLOW_DYE
+      locked:
+        custom-model-data: 412
+        item: YELLOW_DYE
+      unlockable:
+        custom-model-data: 421
+        item: YELLOW_DYE
+      unlocked:
+        custom-model-data: 424
+        item: YELLOW_DYE
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="DAMAGE_REDUCTION";amount=1;type="FLAT"}
+        - stat{stat="max_mana";amount=5;type="FLAT"}
     lores:
       0:
-      - '&8 Reduce el daño causado'
-      - '&8 de otros en un +&a1%'
+      - '&8+5'
       1:
-      - '&8 &mReduce el daño causado'
-      - '&8 &mde otros en un +1%'
+      - '&a+5'
     max-children: 1
     max-level: 1
-    name: <#CFFF30>Reducción de daño I
+    name: '&fMana'
     parents:
-      soft:
-        a3: 3
+      strong:
+        node_1: 1
     paths:
-      c2:
-        path1: 1,2
+      node_3:
+        path1: 0,3
+      node_4:
+        path1: 0,3
     point-consumed: 1
     size: 1
-  c2:
-    coordinates: 2,2
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="DAMAGE_REDUCTION";amount=1;type="FLAT"}
-    lores:
-      0:
-      - '&8 Reduce el daño causado'
-      - '&8 de otros en un +&a1%'
-      1:
-      - '&8 Reduce el daño causado'
-      - '&8 de otros en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 &mReduce el daño causado'
-      - '&8 &mde otros en un +2%'
-    max-children: 2
-    max-level: 2
-    name: <#CFFF30>Reducción de daño II
-    parents:
-      soft:
-        c1: 1
-    paths:
-      c3:
-        path1: 2,1
-    point-consumed: 2
-    size: 1
-  c3:
-    coordinates: 2,0
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="DAMAGE_REDUCTION";amount=1;type="FLAT"}
-    lores:
-      0:
-      - '&8 Reduce el daño causado'
-      - '&8 de otros en un +&a1%'
-      1:
-      - '&8 Reduce el daño causado'
-      - '&8 de otros en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 Reduce el daño causado'
-      - '&8 de otros en un +&a2% &8(&e+1%&8)'
-      3:
-      - '&8 &mReduce el daño causado'
-      - '&8 &mde otros en un +3%'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Reducción de daño&8:&e +6%'
-    max-children: 1
-    max-level: 3
-    name: <#CFFF30>Reducción de daño III
-    parents:
-      soft:
-        c2: 2
-    paths:
-      f1:
-        path1: 3,0
-    point-consumed: 3
-    size: 1
-  d1:
-    coordinates: 12,-4
+  node_3:
+    coordinates: -1,3
     display:
       fully-locked:
         custom-model-data: 413
@@ -307,27 +130,25 @@ nodes:
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="CRITICAL_STRIKE_CHANCE";amount=1;type="FLAT"}
+        - stat{stat="physical_damage";amount=2;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta la probabilidad de tus'
-      - '&8 ataques críticos en un +&a1%'
+      - '&8+2%'
       1:
-      - '&8 &mAumenta la probabilidad de tus'
-      - '&8 &mataques críticos en un +1%'
+      - '&a+2%'
     max-children: 1
     max-level: 1
-    name: <#CFFF30>Chance crítico I
+    name: '&fPhysical Damage'
     parents:
       strong:
-        j3: 3
+        node_2: 1
     paths:
-      d2:
-        path1: 13,-4
+      node_3_1:
+        path1: -1,4
     point-consumed: 1
     size: 1
-  d2:
-    coordinates: 14,-4
+  node_3_1:
+    coordinates: -1,5
     display:
       fully-locked:
         custom-model-data: 413
@@ -336,38 +157,33 @@ nodes:
         custom-model-data: 412
         item: YELLOW_DYE
       unlockable:
-        custom-model-data: 420
+        custom-model-data: 419
         item: YELLOW_DYE
       unlocked:
-        custom-model-data: 423
+        custom-model-data: 422
         item: YELLOW_DYE
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="CRITICAL_STRIKE_CHANCE";amount=1;type="FLAT"}
+        - stat{stat="max_health";amount=6;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta la probabilidad de tus'
-      - '&8 ataques críticos en un +&a1%'
+      - '&8+6'
       1:
-      - '&8 Aumenta la probabilidad de tus'
-      - '&8 ataques críticos en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 &mAumenta la probabilidad de tus'
-      - '&8 &mataques críticos en un +2%'
+      - '&a+6'
     max-children: 1
-    max-level: 2
-    name: <#CFFF30>Chance crítico II
+    max-level: 1
+    name: '&fHealth'
     parents:
       strong:
-        d1: 1
+        node_3: 1
     paths:
-      d3:
-        path1: 14,-3
-    point-consumed: 2
+      node_3_2:
+        path1: -1,6
+    point-consumed: 1
     size: 1
-  d3:
-    coordinates: 14,-2
+  node_3_2:
+    coordinates: -1,7
     display:
       fully-locked:
         custom-model-data: 413
@@ -384,155 +200,159 @@ nodes:
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="CRITICAL_STRIKE_CHANCE";amount=1;type="FLAT"}
+        - stat{stat="physical_damage";amount=3;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta la probabilidad de tus'
-      - '&8 ataques críticos en un +&a1%'
+      - '&8+3%'
       1:
-      - '&8 Aumenta la probabilidad de tus'
-      - '&8 ataques críticos en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 Aumenta la probabilidad de tus'
-      - '&8 ataques críticos en un +&a2% &8(&e+1%&8)'
-      3:
-      - '&8 &mAumenta la probabilidad de tus'
-      - '&8 &mataques críticos en un +3%'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Chance crítico&8:&e +6%'
-    max-children: 2
-    max-level: 3
-    name: <#CFFF30>Chance crítico III
+      - '&a+3%'
+    max-children: 1
+    max-level: 1
+    name: '&fPhysical Damage'
     parents:
       strong:
-        d2: 2
+        node_3_1: 1
+    paths:
+      node_3_3:
+        path1: -1,8
+    point-consumed: 1
+    size: 1
+  node_3_3:
+    coordinates: -1,9
+    experience-table:
+      first_table_item:
+        triggers:
+        - stat{stat="pvp_damage";amount=8;type="FLAT"}
+    lores:
+      0:
+      - '&8+8%'
+      1:
+      - '&a+8%'
+    max-children: 1
+    max-level: 1
+    name: '&fPvP Damage'
+    parents:
+      strong:
+        node_3_2: 1
+    paths:
+      node_3_4:
+        path1: -1,10
+      node_3_4_var:
+        path1: -2,9
+    point-consumed: 1
+    size: 1
+  node_3_4:
+    coordinates: -1,11
+    experience-table:
+      first_table_item:
+        triggers:
+        - stat{stat="max_health";amount=10;type="FLAT"}
+    lores:
+      0:
+      - '&8+10'
+      1:
+      - '&a+10'
+    max-children: 1
+    max-level: 1
+    name: '&fhealth'
+    parents:
+      strong:
+        node_3_3: 1
+    paths:
+      node_3_5:
+        path1: -1,12
+    point-consumed: 1
+    size: 1
+  node_3_4_var:
+    coordinates: -3,9
+    display:
+      fully-locked:
+        custom-model-data: 413
+        item: YELLOW_DYE
+      locked:
+        custom-model-data: 412
+        item: YELLOW_DYE
+      unlockable:
+        custom-model-data: 420
+        item: YELLOW_DYE
+      unlocked:
+        custom-model-data: 423
+        item: YELLOW_DYE
+    experience-table:
+      first_table_item:
+        triggers:
+        - stat{stat="projectile_damage";amount=12;type="FLAT"}
+    lores:
+      0:
+      - '&8+12%'
+      1:
+      - '&a+12%'
+    max-children: 1
+    max-level: 1
+    name: '&fProjectile Damage'
+    parents:
+      strong:
+        node_3_3: 1
+    paths:
+      node_3_5_var:
+        path1: -3,10
+    point-consumed: 1
+    size: 1
+  node_3_5:
+    coordinates: -1,13
+    display:
+      fully-locked:
+        custom-model-data: 413
+        item: YELLOW_DYE
+      locked:
+        custom-model-data: 412
+        item: YELLOW_DYE
+      unlockable:
+        custom-model-data: 419
+        item: YELLOW_DYE
+      unlocked:
+        custom-model-data: 422
+        item: YELLOW_DYE
+    experience-table:
+      first_table_item:
+        triggers:
+        - stat{stat="speed_malus_reduction";amount=35;type="FLAT"}
+    lores:
+      0:
+      - '&8+35%'
+      1:
+      - '&a+35%'
+    max-children: 1
+    max-level: 1
+    name: '&fTenacity'
+    parents:
+      strong:
+        node_3_4: 1
     paths: {}
-    point-consumed: 3
-    size: 1
-  e1:
-    coordinates: 2,-2
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="HEALTH_REGENERATION";amount=0.5;type="FLAT"}
-    lores:
-      0:
-      - '&8 Podrás regenerarte la'
-      - '&8 salud +&a0.5&8c/s'
-      1:
-      - '&8 &mPodrás regenerarte la'
-      - '&8 &msalud +0.5c/s'
-    max-children: 1
-    max-level: 1
-    name: <#CFFF30>Regeneración de salud I
-    parents:
-      strong:
-        b3: 3
-    paths:
-      e2:
-        path1: 3,-2
     point-consumed: 1
     size: 1
-  e2:
-    coordinates: 4,-2
+  node_3_5_var:
+    coordinates: -3,11
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="HEALTH_REGENERATION";amount=0.5;type="FLAT"}
+        - stat{stat="critical_strike_chance";amount=25;type="FLAT"}
     lores:
       0:
-      - '&8 Podrás regenerarte la'
-      - '&8 salud +&a0.5&8c/s'
+      - '&8+25%'
       1:
-      - '&8 Podrás regenerarte la'
-      - '&8 salud +&a0.5&8c/s &8(&e+0.5&8)'
-      2:
-      - '&8 &mPodrás regenerarte la'
-      - '&8 &msalud +1c/s'
-    max-children: 1
-    max-level: 2
-    name: <#CFFF30>Regeneración de salud II
-    parents:
-      strong:
-        e1: 1
-    paths:
-      e3:
-        path1: 4,-3
-    point-consumed: 2
-    size: 1
-  e3:
-    coordinates: 4,-4
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="HEALTH_REGENERATION";amount=0.5;type="FLAT"}
-    lores:
-      0:
-      - '&8 Podrás regenerarte la'
-      - '&8 salud +&a0.5&8c/s'
-      1:
-      - '&8 Podrás regenerarte la'
-      - '&8 salud +&a0.5&8c/s &8(&e+0.5&8)'
-      2:
-      - '&8 Podrás regenerarte la'
-      - '&8 salud +&a1&8c/s &8(&e+0.5&8)'
-      3:
-      - '&8 &mPodrás regenerarte la'
-      - '&8 &msalud +1.5c/s'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Regeneración de salud&8:&e +3&8c/s'
-    max-children: 1
-    max-level: 3
-    name: <#CFFF30>Regeneración de salud III
-    parents:
-      strong:
-        e2: 2
-    paths:
-      g1:
-        path1: 5,-4
-    point-consumed: 3
-    size: 1
-  f1:
-    coordinates: 4,0
-    display:
-      fully-locked:
-        custom-model-data: 413
-        item: YELLOW_DYE
-      locked:
-        custom-model-data: 412
-        item: YELLOW_DYE
-      unlockable:
-        custom-model-data: 421
-        item: YELLOW_DYE
-      unlocked:
-        custom-model-data: 424
-        item: YELLOW_DYE
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="MANA_REGENERATION";amount=0.5;type="FLAT"}
-    lores:
-      0:
-      - '&8 Podrás regenerarte el'
-      - '&8 mana +&a0.5&8c/s'
-      1:
-      - '&8 &mPodrás regenerarte el'
-      - '&8 &mmana +0.5c/s'
+      - '&a+25%'
     max-children: 1
     max-level: 1
-    name: <#CFFF30>Regeneración de mana I
+    name: '&fCritical Strike Chance'
     parents:
       strong:
-        c3: 3
-    paths:
-      f2:
-        path1: 4,1
+        node_3_4_var: 1
+    paths: {}
     point-consumed: 1
     size: 1
-  f2:
-    coordinates: 4,2
+  node_4:
+    coordinates: 1,3
     display:
       fully-locked:
         custom-model-data: 413
@@ -549,76 +369,25 @@ nodes:
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="MANA_REGENERATION";amount=0.5;type="FLAT"}
+        - stat{stat="magic_damage";amount=5;type="FLAT"}
     lores:
       0:
-      - '&8 Podrás regenerarte el'
-      - '&8 mana +&a0.5&8c/s'
+      - '&8+5%'
       1:
-      - '&8 Podrás regenerarte el'
-      - '&8 mana +&a0.5&8c/s &8(&e+0.5&8)'
-      2:
-      - '&8 &mPodrás regenerarte el'
-      - '&8 &mmana +1c/s'
+      - '&a+5%'
     max-children: 1
-    max-level: 2
-    name: <#CFFF30>Regeneración de mana II
+    max-level: 1
+    name: '&fMagic Damage'
     parents:
       strong:
-        f1: 1
+        node_2: 1
     paths:
-      f3:
-        path1: 5,2
-    point-consumed: 2
+      node_4_1:
+        path1: 1,4
+    point-consumed: 1
     size: 1
-  f3:
-    coordinates: 6,2
-    display:
-      fully-locked:
-        custom-model-data: 413
-        item: YELLOW_DYE
-      locked:
-        custom-model-data: 412
-        item: YELLOW_DYE
-      unlockable:
-        custom-model-data: 421
-        item: YELLOW_DYE
-      unlocked:
-        custom-model-data: 424
-        item: YELLOW_DYE
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="MANA_REGENERATION";amount=0.5;type="FLAT"}
-    lores:
-      0:
-      - '&8 Podrás regenerarte el'
-      - '&8 mana +&a0.5&8c/s'
-      1:
-      - '&8 Podrás regenerarte el'
-      - '&8 mana +&a0.5&8c/s &8(&e+0.5&8)'
-      2:
-      - '&8 Podrás regenerarte el'
-      - '&8 mana +&a1&8c/s &8(&e+0.5&8)'
-      3:
-      - '&8 &mPodrás regenerarte el'
-      - '&8 &mmana +1.5c/s'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Regeneración de mana&8:&e +3&8c/s'
-    max-children: 1
-    max-level: 3
-    name: <#CFFF30>Regeneración de mana III
-    parents:
-      strong:
-        f2: 2
-    paths:
-      h1:
-        path1: 6,1
-    point-consumed: 3
-    size: 1
-  g1:
-    coordinates: 6,-4
+  node_4_1:
+    coordinates: 1,5
     display:
       fully-locked:
         custom-model-data: 413
@@ -635,27 +404,25 @@ nodes:
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="MAGIC_DAMAGE";amount=1;type="FLAT"}
+        - stat{stat="cooldown_reduction";amount=10;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta el daño mágico en'
-      - '&8 tus ataques en un +&a1%'
+      - '&8+10%'
       1:
-      - '&8 &mAumenta el daño mágico en'
-      - '&8 &mtus ataques en un +1%'
+      - '&a+10%'
     max-children: 1
     max-level: 1
-    name: <#CFFF30>Daño mágico I
+    name: '&fCooldown Reduction'
     parents:
       strong:
-        e3: 3
+        node_4: 1
     paths:
-      g2:
-        path1: 6,-3
+      node_4_2:
+        path1: 1,6
     point-consumed: 1
     size: 1
-  g2:
-    coordinates: 6,-2
+  node_4_2:
+    coordinates: 1,7
     display:
       fully-locked:
         custom-model-data: 413
@@ -672,30 +439,49 @@ nodes:
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="MAGIC_DAMAGE";amount=1;type="FLAT"}
+        - stat{stat="mana_regeneration";amount=3;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta el daño mágico en'
-      - '&8 tus ataques en un +&a1%'
+      - '&8+3%'
       1:
-      - '&8 Aumenta el daño mágico en'
-      - '&8 tus ataques en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 &mAumenta el daño mágico en'
-      - '&8 &mtus ataques en un +2%'
+      - '&a+3%'
     max-children: 1
-    max-level: 2
-    name: <#CFFF30>Daño mágico II
+    max-level: 1
+    name: '&fMana Regeneration'
     parents:
       strong:
-        g1: 1
+        node_4_1: 1
     paths:
-      g3:
-        path1: 7,-2
-    point-consumed: 2
+      node_4_3:
+        path1: 1,8
+    point-consumed: 1
     size: 1
-  g3:
-    coordinates: 8,-2
+  node_4_3:
+    coordinates: 1,9
+    experience-table:
+      first_table_item:
+        triggers:
+        - stat{stat="pvp_damage";amount=6;type="FLAT"}
+    lores:
+      0:
+      - '&8+6%'
+      1:
+      - '&a+6%'
+    max-children: 1
+    max-level: 1
+    name: '&fPvP Damage'
+    parents:
+      strong:
+        node_4_2: 1
+    paths:
+      node_4_4:
+        path1: 1,10
+      node_4_4_var:
+        path1: 2,9
+    point-consumed: 1
+    size: 1
+  node_4_4:
+    coordinates: 1,11
     display:
       fully-locked:
         custom-model-data: 413
@@ -712,204 +498,150 @@ nodes:
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="MAGIC_DAMAGE";amount=1;type="FLAT"}
+        - stat{stat="cooldown_reduction";amount=20;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta el daño mágico en'
-      - '&8 tus ataques en un +&a1%'
+      - '&8+20%'
       1:
-      - '&8 Aumenta el daño mágico en'
-      - '&8 tus ataques en un +&a1% &8(&e+1%&8)'
-      2:
-      - '&8 Aumenta el daño mágico en'
-      - '&8 tus ataques en un +&a2% &8(&e+1%&8)'
-      3:
-      - '&8 &mAumenta el daño mágico en'
-      - '&8 &mtus ataques en un +3%'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Daño mágico&8:&e +6%'
-    max-children: 1
-    max-level: 3
-    name: <#CFFF30>Daño mágico II
-    parents:
-      strong:
-        g2: 2
-    paths:
-      j1:
-        path1: 8,-1
-        path2: 8,0
-        path3: 9,0
-    point-consumed: 3
-    size: 1
-  h1:
-    coordinates: 6,0
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="MAX_HEALTH";amount=5;type="FLAT"}
-    lores:
-      0:
-      - '&8 Aumenta más tu salud y'
-      - '&8 sobrevive más con +&a5'
-      1:
-      - '&8 &mAumenta más tu salud y'
-      - '&8 &msobrevive más con +5'
+      - '&a+20%'
     max-children: 1
     max-level: 1
-    name: <#CFFF30>Más salud I
+    name: '&fCooldown Reduction'
     parents:
-      soft:
-        f3: 3
+      strong:
+        node_4_3: 1
     paths:
-      h2:
-        path1: 7,0
+      node_4_5:
+        path1: 1,12
     point-consumed: 1
     size: 1
-  h2:
-    coordinates: 8,0
+  node_4_4_var:
+    coordinates: 3,9
+    display:
+      fully-locked:
+        custom-model-data: 413
+        item: YELLOW_DYE
+      locked:
+        custom-model-data: 412
+        item: YELLOW_DYE
+      unlockable:
+        custom-model-data: 421
+        item: YELLOW_DYE
+      unlocked:
+        custom-model-data: 424
+        item: YELLOW_DYE
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="MAX_HEALTH";amount=5;type="FLAT"}
+        - stat{stat="magic_damage";amount=12;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta más tu salud y'
-      - '&8 sobrevive más con +&a5'
+      - '&8+12%'
       1:
-      - '&8 Aumenta más tu salud y'
-      - '&8 sobrevive más con +&a5 &8(&e+5&8)'
-      2:
-      - '&8 &mAumenta más tu salud y'
-      - '&8 &msobrevive más con +10'
-    max-children: 1
-    max-level: 2
-    name: <#CFFF30>Más salud II
-    parents:
-      strong:
-        h1: 1
-    paths:
-      h3:
-        path1: 8,1
-    point-consumed: 2
-    size: 1
-  h3:
-    coordinates: 8,2
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="MAX_HEALTH";amount=5;type="FLAT"}
-    lores:
-      0:
-      - '&8 Aumenta más tu salud y'
-      - '&8 sobrevive más con +&a5'
-      1:
-      - '&8 Aumenta más tu salud y'
-      - '&8 sobrevive más con +&a5 &8(&e+5&8)'
-      2:
-      - '&8 Aumenta más tu salud y'
-      - '&8 sobrevive más con +&a10 &8(&e+5&8)'
-      3:
-      - '&8 &mAumenta más tu salud y'
-      - '&8 &msobrevive más con +15'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Más salud&8:&e +30'
-    max-children: 1
-    max-level: 3
-    name: <#CFFF30>Más salud III
-    parents:
-      strong:
-        h2: 2
-    paths:
-      j1:
-        path1: 9,2
-        path2: 10,2
-        path3: 10,1
-    point-consumed: 3
-    size: 1
-  j1:
-    coordinates: 10,0
-    experience-table:
-      first_table_item:
-        triggers:
-        - stat{stat="WEAPON_DAMAGE";amount=2;type="FLAT"}
-    lores:
-      0:
-      - '&8 Aumenta la fuerza en tus'
-      - '&8 ataques a un +&a2%'
-      1:
-      - '&8 &mAumenta la fuerza en tus'
-      - '&8 &mataques a un +2%'
+      - '&a+12%'
     max-children: 1
     max-level: 1
-    name: <#CFFF30>Más fuerza I
+    name: '&fMagic Damage'
     parents:
-      soft:
-        g3: 3
-        h3: 3
+      strong:
+        node_4_3: 1
     paths:
-      j2:
-        path1: 11,0
+      node_4_5_var:
+        path1: 3,10
     point-consumed: 1
     size: 1
-  j2:
-    coordinates: 12,0
+  node_4_5:
+    coordinates: 1,13
+    display:
+      fully-locked:
+        custom-model-data: 413
+        item: YELLOW_DYE
+      locked:
+        custom-model-data: 412
+        item: YELLOW_DYE
+      unlockable:
+        custom-model-data: 421
+        item: YELLOW_DYE
+      unlocked:
+        custom-model-data: 424
+        item: YELLOW_DYE
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="WEAPON_DAMAGE";amount=2;type="FLAT"}
+        - stat{stat="max_mana";amount=50;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta la fuerza en tus'
-      - '&8 ataques a un +&a2%'
+      - '&8+50'
       1:
-      - '&8 Aumenta la fuerza en tus'
-      - '&8 ataques a un +&a2% &8(&e+2&8)'
-      2:
-      - '&8 &mAumenta la fuerza en tus'
-      - '&8 &mataques a un +4%'
+      - '&a+50'
     max-children: 1
-    max-level: 2
-    name: <#CFFF30>Más fuerza II
+    max-level: 1
+    name: '&fMana'
     parents:
       strong:
-        j1: 1
-    paths:
-      j3:
-        path1: 12,-1
-    point-consumed: 2
+        node_4_4: 1
+    paths: {}
+    point-consumed: 1
     size: 1
-  j3:
-    coordinates: 12,-2
+  node_4_5_var:
+    coordinates: 3,11
     experience-table:
       first_table_item:
         triggers:
-        - stat{stat="WEAPON_DAMAGE";amount=2;type="FLAT"}
+        - stat{stat="skill_critical_strike_chance";amount=15;type="FLAT"}
     lores:
       0:
-      - '&8 Aumenta la fuerza en tus'
-      - '&8 ataques a un +&a2%'
+      - '&8+15%'
       1:
-      - '&8 Aumenta la fuerza en tus'
-      - '&8 ataques a un +&a2% &8(&e+2&8)'
-      2:
-      - '&8 Aumenta la fuerza en tus'
-      - '&8 ataques a un +&a4% &8(&e+2&8)'
-      3:
-      - '&8 &mAumenta la fuerza en tus'
-      - '&8 &mataques a un +6%'
-      - ''
-      - '&8&nBonus total:'
-      - '&8 <#CFFF30>Más fuerza&8:&e +12%'
+      - '&a+15%'
     max-children: 1
-    max-level: 3
-    name: <#CFFF30>Más fuerza III
+    max-level: 1
+    name: '&fSkill Critical Strike Chance'
     parents:
       strong:
-        j2: 2
-    paths:
-      d1:
-        path1: 12,-3
-    point-consumed: 3
+        node_4_4_var: 1
+    paths: {}
+    point-consumed: 1
     size: 1
+  start:
+    coordinates: 0,-2
+    display:
+      fully-locked:
+        custom-model-data: 416
+        item: YELLOW_DYE
+      locked:
+        custom-model-data: 416
+        item: YELLOW_DYE
+      unlockable:
+        custom-model-data: 416
+        item: YELLOW_DYE
+      unlocked:
+        custom-model-data: 417
+        item: YELLOW_DYE
+    experience-table:
+      first_table_item:
+        triggers:
+        - stat{stat="additional_experience";amount=5;type="FLAT"}
+    is-root: true
+    lores:
+      0:
+      - '&8+5%'
+      1:
+      - '&a+5%'
+    max-level: 1
+    name: '&fAdditional Experience'
+    parents: {}
+    paths:
+      a20:
+        path1: 1,-2
+        path2: 2,-2
+        path3: 3,-2
+        path4: 3,-3
+        path5: 3,-4
+        path6: 3,-5
+        path7: 3,-6
+      node_1:
+        path1: 0,-1
+    point-consumed: 1
+    size: 1
+type: custom

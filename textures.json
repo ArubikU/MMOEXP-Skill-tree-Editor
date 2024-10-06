@@ -84,6 +84,7 @@
             "uvs": [68,88,18,18]
         }, 
         "default":{
+            "unlocked": 0,
             "locked": 412,
             "fully-locked": 413,
             "path": "{{folder}}\\buttons.png",

@@ -386,7 +386,7 @@ try:
                         uvs = value['uvs']
                         #format (x,y,width,height)
                         tempTwo = tempImage.crop((uvs[0], uvs[1], uvs[0]+uvs[2], uvs[1]+uvs[3]))
-                        face = round(18*2)
+                        face = round(18*2*1.2)
                         tempTwo = tempTwo.resize((face,face), resample=PIL.Image.NEAREST)
                         textures[key] = PIL.ImageTk.PhotoImage(tempTwo)
                     else:
@@ -690,7 +690,7 @@ try:
                 uvs = value['uvs']
                 #format (x,y,width,height)
                 tempTwo = tempImage.crop((uvs[0], uvs[1], uvs[0]+uvs[2], uvs[1]+uvs[3]))
-                face = round(18*2*self.scale)
+                face = round(18*2*(self.scale+0.2))
                 tempTwo = tempTwo.resize((face,face), resample=PIL.Image.NEAREST)
                 textures[key] = PIL.ImageTk.PhotoImage(tempTwo)
             self.draw_grid()
@@ -740,7 +740,7 @@ try:
 
 
         @lru_cache(maxsize=None)
-        def bfs_path(self, start, goal):
+        def _bfs_path(self, start, goal,blockednodes):
             # Dynamically generates a graph
             graph = {}
             
@@ -755,7 +755,7 @@ try:
                     # Adding connections to neighbors
                     for direction in [(0, 1), (1, 0), (0, -1), (-1, 0)]:  # right, down, left, up
                         neighbor = (x + direction[0], y + direction[1])
-                        if(neighbor in self.blocked_nodes): continue
+                        if(neighbor in blockednodes): continue
                         if(neighbor in self.bfs_path_used): continue
                         if neighbor in self.nodes:
                             continue
@@ -811,7 +811,8 @@ try:
             
             print(f'Path: {path}')  # Debugging message
             return path
-        
+        def bfs_path(self, start, goal):
+            return self._bfs_path(start,goal,tuple(self.blocked_nodes))
         
         @lru_cache(maxsize=None)
         def is_valid(self,coordinate):
@@ -879,12 +880,14 @@ try:
                 self.save_state()
                 self.draw_nodes()
             except Exception as e:
-                messagebox.showerror("Error", f"Error loading the file: {filename} with error {e}")
+                message=""
+                if hasattr(e, 'message'):
+                    message=e.message
+                else:
+                    message=str(e)
+                messagebox.showerror("Error", f"Error loading the file: {filename} with error {message}")
 
-        def draw_grid(self):
-            self.canvas.delete("grid")
-            for i in range(-400, 1201, self.grid_size):
-                e = i
+        def draw_grid_line(self,e):
                 x1 = self.canvas_x(e)
                 y1 = self.canvas_y(-400)
                 x2 = x1
@@ -896,6 +899,11 @@ try:
                 y2 = y1
                 x2 = self.canvas_x(1200)
                 self.canvas.create_line(x1, y1, x2, y2, fill="lightgray", tags="grid")
+        def draw_grid(self):
+            self.canvas.delete("grid")
+            for i in range(-400, 1201, self.grid_size):
+                self.draw_grid_line(i)
+            
             
         @lru_cache(maxsize=2)
         def create_detection_rectangle(self, xcord, ycord):
@@ -1018,7 +1026,7 @@ try:
                                                     direction = "up-right"
                                                     castext = "#10"
                                                 elif dx_next == 0 and dy_next == -1:
-                                                    direction = "up-left"
+                                                    direction = "down-right"
                                                     castext = "#11"
                                                 else:
                                                     direction = "left"
