@@ -16,7 +16,16 @@ import yaml
 
 continueProgram = True
 
-folder = os.path.dirname(os.path.abspath(__file__))
+def get_base_path():
+    if getattr(sys, 'frozen', False):
+        # If the application is run as a bundle, use the directory of the executable
+        return os.path.dirname(sys.executable)
+    else:
+        # If the application is run as a script, use the directory of the script
+        return os.path.dirname(os.path.abspath(__file__))
+    
+folder = get_base_path()
+
 log = f"{folder}\\logs\\latest-log.txt"
 logdata = []
 logdata.append(f"----------------------------------------")
