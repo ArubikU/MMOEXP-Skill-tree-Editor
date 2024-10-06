@@ -80,7 +80,7 @@ writeLog()
 if getattr(sys, 'frozen', False):
     basePath = get_base_path()
 
-    files_to_copy = ['textures.json', 'conf.json', 'textures/Botones.png']
+    files_to_copy = ['textures.json', 'conf.json', 'buttons.png']
 
     for file in files_to_copy:
         destination = os.path.join(basePath, file)
