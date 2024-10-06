@@ -33,7 +33,7 @@ nodes:
       1: '&8 of your skills by a +&a1%'
     max-childer: 1
     max-level: 1
-    name: <#ffe0cb>New Node
+    name: <#ffe0cb>New Nodes
     parents:
       strong:
         start: 1
